@@ -3018,11 +3018,13 @@ void RandomPlayerbotMgr::PrintStats()
     {
         LOG_INFO("playerbots", "Bots rpg status:");
         LOG_INFO("playerbots",
-                 "    Idle: {}, Rest: {}, GoGrind: {}, GoCamp: {}, MoveRandom: {}, MoveNpc: {}, DoQuest: {}, "
-                 "TravelFlight: {}, OutdoorPvP: {}",
+                 "    Idle: {}, Rest: {}, GoGrind: {}, GoCamp: {}, GoAuctioneer: {}, MoveRandom: {}, MoveNpc: {}, "
+                 "DoQuest: {}, TravelFlight: {}, OutdoorPvP: {}",
                  rpgStatusCount[RPG_IDLE], rpgStatusCount[RPG_REST], rpgStatusCount[RPG_GO_GRIND],
-                 rpgStatusCount[RPG_GO_CAMP], rpgStatusCount[RPG_WANDER_RANDOM], rpgStatusCount[RPG_WANDER_NPC],
-                 rpgStatusCount[RPG_DO_QUEST], rpgStatusCount[RPG_TRAVEL_FLIGHT], rpgStatusCount[RPG_OUTDOOR_PVP]);
+                 // Modify for Auctioneer
+                 rpgStatusCount[RPG_GO_CAMP], rpgStatusCount[RPG_GO_AUCTIONEER], rpgStatusCount[RPG_WANDER_RANDOM],
+                 rpgStatusCount[RPG_WANDER_NPC], rpgStatusCount[RPG_DO_QUEST], rpgStatusCount[RPG_TRAVEL_FLIGHT],
+                 rpgStatusCount[RPG_OUTDOOR_PVP]);
 
         LOG_INFO("playerbots", "Bots total quests:");
         LOG_INFO("playerbots", "    Accepted: {}, Rewarded: {}, Dropped: {}", rpgStasticTotal.questAccepted,

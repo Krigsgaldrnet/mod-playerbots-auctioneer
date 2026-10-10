@@ -71,7 +71,9 @@ enum NewRpgStatus : int
     // Taking a break
     RPG_REST = 7,
     RPG_OUTDOOR_PVP = 8,
-    RPG_STATUS_END = 9
+    RPG_GO_AUCTIONEER = 9,
+    // Add Auctioneer
+    RPG_STATUS_END = 10
 };
 
 #define MAX_SPECNO 20
@@ -393,6 +395,10 @@ public:
     bool AutoDoQuests;
     bool EnableNewRpgStrategy;
     std::unordered_map<NewRpgStatus, uint32> RpgStatusProbWeight;
+    // Add Auctioneer
+    int32 auctionVisitMinLevel;
+    int32 auctionVisitMinBagFillPercent;
+    int32 auctionVisitMinGoldCopper;
     bool SyncLevelWithPlayers;
     bool RandomBotConcentrateInPlayerZone;
     bool AutoLearnQuestSpells;

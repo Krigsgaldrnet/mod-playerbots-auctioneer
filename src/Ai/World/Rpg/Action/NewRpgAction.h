@@ -67,6 +67,8 @@ protected:
     const int32 statusRestDuration = 30 * IN_MILLISECONDS ;
     const int32 statusDoQuestDuration = 30 * MINUTE  * IN_MILLISECONDS ;
     const int32 statusOutDoorPvPDuration = HOUR * IN_MILLISECONDS ;
+    // Add Auctioneer
+    const int32 statusGoAuctioneerDuration = 5 * MINUTE  * IN_MILLISECONDS ;
 };
 
 class NewRpgGoGrindAction : public NewRpgBaseAction
@@ -120,6 +122,14 @@ public:
 
 protected:
     void ContinueCrossMapTaxi();
+};
+
+// Add Auctioneer
+class NewRpgGoAuctioneerAction : public NewRpgBaseAction
+{
+public:
+    NewRpgGoAuctioneerAction(PlayerbotAI* botAI) : NewRpgBaseAction(botAI, "new rpg go auctioneer") {}
+    bool Execute(Event event) override;
 };
 
 #endif
