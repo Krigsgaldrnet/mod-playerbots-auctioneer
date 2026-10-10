@@ -639,6 +639,8 @@ public:
     void RecordQuestAbandoned(uint32 questId, QuestAbandonReason reason);
     std::unordered_set<uint32> lowPriorityQuest;
     time_t bgReleaseAttemptTime = 0;
+    // Add Auctioneer
+    time_t nextAuctionVisitTime = 0;
     ForceRebuffState forceRebuff;
 
     // Schedules a callback to run once after <delayMs> milliseconds.
