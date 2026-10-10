@@ -17,7 +17,9 @@
 #include "NewRpgInfo.h"
 #include "QuestLevelRules.h"
 #include "NewRpgStrategy.h"
+#include "AuctionHouseMgr.h"
 #include "AuctionSellAdvisor.h"
+#include "AuctionBuyAdvisor.h"
 #include "Object.h"
 #include "ObjectAccessor.h"
 #include "ObjectDefines.h"
@@ -928,6 +930,16 @@ bool NewRpgBaseAction::ShouldVisitAuctioneer()
             return true;
     }
 
+    // Buyable auction. Gated by probability because the scan is expensive.
+    if (sPlayerbotAIConfig.auctionEnableBuying &&
+        sPlayerbotAIConfig.auctionBuyScanChancePercent > 0 &&
+        urand(1, 100) <= sPlayerbotAIConfig.auctionBuyScanChancePercent)
+    {
+        auto candidate = PlayerbotAuction::FindAuctionToBuy(botAI);
+        if (candidate.auction)
+            return true;
+    }
+
     return false;
 }
 
@@ -1017,7 +1029,7 @@ bool NewRpgBaseAction::RandomChangeStatus(std::vector<NewRpgStatus> candidateSta
             return false;
         }
         // Add Auctioneer
-                case RPG_GO_AUCTIONEER:
+        case RPG_GO_AUCTIONEER:
         {
             TravelMgr::NpcLocation auctioneer;
             if (sTravelMgr.SelectAuctioneerByMap(bot, auctioneer))
@@ -1027,18 +1039,43 @@ bool NewRpgBaseAction::RandomChangeStatus(std::vector<NewRpgStatus> candidateSta
                                   auctioneer.loc.GetPositionY(),
                                   auctioneer.loc.GetPositionZ());
 
-                auto candidate = PlayerbotAuction::FindItemToSell(botAI);
-                if (candidate.item)
+                // Sell candidate — cheap, run always when selling is enabled.
+                PlayerbotAuction::SellCandidate sellCand;
+                if (sPlayerbotAIConfig.auctionEnableSelling)
+                    sellCand = PlayerbotAuction::FindItemToSell(botAI);
+
+                // Buy candidate — expensive (scans all AH listings). Gate behind
+                // a probability so we don't hammer the manager every tick.
+                PlayerbotAuction::BuyCandidate buyCand;
+                if (sPlayerbotAIConfig.auctionEnableBuying &&
+                    sPlayerbotAIConfig.auctionBuyScanChancePercent > 0 &&
+                    urand(1, 100) <= sPlayerbotAIConfig.auctionBuyScanChancePercent)
                 {
-                    botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry,
-                                                        candidate.item->GetGUID(),
-                                                        candidate.suggestedBid,
-                                                        candidate.suggestedBuyout,
-                                                        sPlayerbotAIConfig.auctionSellDurationMinutes);
+                    buyCand = PlayerbotAuction::FindAuctionToBuy(botAI);
+                }
+
+                ObjectGuid sellGuid = sellCand.item ? sellCand.item->GetGUID() : ObjectGuid::Empty;
+                uint32 sellBid      = sellCand.suggestedBid;
+                uint32 sellBuyout   = sellCand.suggestedBuyout;
+                uint32 sellDur      = sellCand.item ? sPlayerbotAIConfig.auctionSellDurationMinutes : 0;
+
+                uint32 buyAuctionId = 0;
+                uint32 buyPrice     = 0;
+                if (buyCand.auction)
+                {
+                    buyAuctionId = buyCand.auction->Id;
+                    buyPrice     = buyCand.doBuyout ? buyCand.buyoutAmount : buyCand.bidAmount;
+                }
+
+                if (sellGuid.IsEmpty() && buyAuctionId == 0)
+                {
+                    botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry);
                 }
                 else
                 {
-                    botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry);
+                    botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry,
+                                                        sellGuid, sellBid, sellBuyout, sellDur,
+                                                        buyAuctionId, buyPrice);
                 }
                 return true;
             }
