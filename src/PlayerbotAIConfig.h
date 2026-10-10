@@ -316,6 +316,7 @@ public:
     uint32 auctionBuyPriceMultiplierMin;
     uint32 auctionBuyPriceMultiplierMax;
     uint32 auctionBuyScanChancePercent;
+    uint32 auctionMaxTrackedBids;
 
     // Seller preference
     uint32 auctionSellerPreferenceAggression;
