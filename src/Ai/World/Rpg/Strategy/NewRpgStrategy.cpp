@@ -75,14 +75,17 @@ void NewRpgStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
         )
     );
     // Add Auctioneer
-    triggers.push_back(
-        new TriggerNode(
-            "go auctioneer status",
-            {
-                NextAction("new rpg go auctioneer", 3.0f)
-            }
-        )
-    );
+    if (sPlayerbotAIConfig.auctionEnabled)
+    {
+        triggers.push_back(
+            new TriggerNode(
+                "go auctioneer status",
+                {
+                    NextAction("new rpg go auctioneer", 3.0f)
+                }
+            )
+        );
+      }
 }
 
 void NewRpgStrategy::InitMultipliers(std::vector<Multiplier*>&)
