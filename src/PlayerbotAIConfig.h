@@ -275,6 +275,7 @@ public:
     std::map<uint32, std::pair<uint32, uint32>> ZoneBrackets;
     bool LogInGroupOnly, LogValuesPerTick;
     bool debugAuction;
+    bool allowPlayerAuctionCommands;
     bool fleeingEnabled;
     bool SummonAtInnkeepersEnabled;
     std::string CombatStrategies, NonCombatStrategies;
