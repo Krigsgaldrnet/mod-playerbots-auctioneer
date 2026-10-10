@@ -2820,4 +2820,5 @@ Playerbots.GuildTaskKillTaskDistance = 200
 Playerbots.TargetPosRecalcDistance = 0.1
 
 # Allow bots to be summoned near innkeepers
+
 Playerbots.SummonAtInnkeepersEnabled = 1
