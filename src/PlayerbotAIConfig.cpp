@@ -513,7 +513,7 @@ bool PlayerbotAIConfig::Initialize()
     if (auctionBuyPriceMultiplierMax < auctionBuyPriceMultiplierMin)
         auctionBuyPriceMultiplierMax = auctionBuyPriceMultiplierMin;
         
-        auctionBuyScanChancePercent =
+    auctionBuyScanChancePercent =
         sConfigMgr->GetOption<uint32>("Playerbots.Auction.BuyScanChancePercent", 10);
     if (auctionBuyScanChancePercent > 100)
         auctionBuyScanChancePercent = 100;
