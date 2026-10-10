@@ -4959,7 +4959,7 @@ void TravelMgr::PrepareDestinationCache()
         }
     }
     
-    }
+        LOG_INFO("playerbots", ">> {} flight masters, {} innkeepers, {} bankers and {} auctioneers collected.", flightMastersCount, innkeepersCount, bankerCount, auctioneerCount);
 
     // Process temporary caches
     for (auto const& [gridTuple, creatureDataList] : tempLocsCache)
