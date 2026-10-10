@@ -14,6 +14,7 @@
 #include "IVMapMgr.h"
 #include "NewRpgInfo.h"
 #include "NewRpgStrategy.h"
+#include "AuctionSellAdvisor.h"
 #include "Object.h"
 #include "ObjectAccessor.h"
 #include "ObjectDefines.h"
@@ -1093,6 +1094,14 @@ bool NewRpgBaseAction::ShouldVisitAuctioneer()
         bot->GetMoney() >= (uint32)sPlayerbotAIConfig.auctionVisitMinGoldCopper)
         return true;
 
+    // Sellable inventory. Only when selling is enabled.
+    if (sPlayerbotAIConfig.auctionEnableSelling)
+    {
+        auto candidate = PlayerbotAuction::FindItemToSell(botAI);
+        if (candidate.item)
+            return true;
+    }
+
     return false;
 }
 
@@ -1181,8 +1190,8 @@ bool NewRpgBaseAction::RandomChangeStatus(std::vector<NewRpgStatus> candidateSta
             }
             return false;
         }
-// Add Auctioneer
-        case RPG_GO_AUCTIONEER:
+        // Add Auctioneer
+                case RPG_GO_AUCTIONEER:
         {
             TravelMgr::NpcLocation auctioneer;
             if (sTravelMgr.SelectAuctioneerByMap(bot, auctioneer))
@@ -1191,7 +1200,20 @@ bool NewRpgBaseAction::RandomChangeStatus(std::vector<NewRpgStatus> candidateSta
                                   auctioneer.loc.GetPositionX(),
                                   auctioneer.loc.GetPositionY(),
                                   auctioneer.loc.GetPositionZ());
-                botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry);
+
+                auto candidate = PlayerbotAuction::FindItemToSell(botAI);
+                if (candidate.item)
+                {
+                    botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry,
+                                                        candidate.item->GetGUID(),
+                                                        candidate.suggestedBid,
+                                                        candidate.suggestedBuyout,
+                                                        sPlayerbotAIConfig.auctionSellDurationMinutes);
+                }
+                else
+                {
+                    botAI->rpgInfo.ChangeToGoAuctioneer(pos, auctioneer.entry);
+                }
                 return true;
             }
             return false;
