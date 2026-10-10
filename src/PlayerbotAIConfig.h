@@ -319,6 +319,9 @@ public:
     uint32 auctionMaxTrackedBids;
     bool auctionProtectUsefulItems;
     bool auctionSellFullStacksOnly;
+    uint32 auctionMaxSellsPerVisit;
+    uint32 auctionRelistUndercutPercentMin;
+    uint32 auctionRelistUndercutPercentMax;
 
     // Seller preference
     uint32 auctionSellerPreferenceAggression;
