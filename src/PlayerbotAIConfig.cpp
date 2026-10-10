@@ -566,6 +566,12 @@ bool PlayerbotAIConfig::Initialize()
     if (auctionCraftMarginPercent > 500)
         auctionCraftMarginPercent = 500;
 
+    auctionBaselineReloadCheckMinutes =
+        sConfigMgr->GetOption<uint32>("AiPlayerbot.Auction.Baseline.ReloadCheckMinutes",
+                                      5);
+    if (auctionBaselineReloadCheckMinutes > 1440)
+        auctionBaselineReloadCheckMinutes = 1440;
+
     auctionMaxActiveListingsPerBot =
         sConfigMgr->GetOption<uint32>("AiPlayerbot.Auction.MaxActiveListingsPerBot", 100);
         auctionMaxRelistRetries =
