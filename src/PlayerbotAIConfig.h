@@ -73,8 +73,9 @@ enum NewRpgStatus : int
     RPG_REST = 7,
     RPG_OUTDOOR_PVP = 8,
     RPG_GO_AUCTIONEER = 9,
-    // Add Auctioneer
-    RPG_STATUS_END = 10
+    // Add Vendor
+    RPG_GO_VENDOR = 10,
+    RPG_STATUS_END = 11
 };
 
 #define MAX_SPECNO 20
@@ -502,6 +503,12 @@ public:
     int32 auctionVisitMinLevel;
     int32 auctionVisitMinBagFillPercent;
     int32 auctionVisitMinGoldCopper;
+
+    // Add Vendor
+    int32 vendorVisitMinLevel;
+    int32 vendorVisitMinBagFillPercent;
+    uint32 vendorVisitMinMinutes;
+    uint32 vendorVisitMaxMinutes;
     bool SyncLevelWithPlayers;
     bool RandomBotConcentrateInPlayerZone;
     bool AutoLearnQuestSpells;

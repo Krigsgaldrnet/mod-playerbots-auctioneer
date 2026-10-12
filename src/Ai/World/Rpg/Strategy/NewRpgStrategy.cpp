@@ -85,6 +85,15 @@ void NewRpgStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
                 }
             )
         );
+        // Add Vendor
+        triggers.push_back(
+            new TriggerNode(
+                "go vendor status",
+                {
+                    NextAction("new rpg go vendor", 3.0f)
+                }
+            )
+        );
       }
 }
 
