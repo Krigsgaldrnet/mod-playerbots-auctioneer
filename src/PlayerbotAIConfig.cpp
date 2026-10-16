@@ -637,7 +637,7 @@ bool PlayerbotAIConfig::Initialize()
 
     auctionCraftArbitrageEnabled =
         sConfigMgr->GetOption<bool>("Playerbots.Auction.Baseline.CraftArbitrageEnabled",
-                                    true);
+                                    false);
     auctionCraftMarginPercent =
         sConfigMgr->GetOption<uint32>("Playerbots.Auction.Baseline.CraftMarginPercent",
                                       10);
@@ -646,7 +646,9 @@ bool PlayerbotAIConfig::Initialize()
 
     auctionBaselineReloadCheckMinutes =
         sConfigMgr->GetOption<uint32>("Playerbots.Auction.Baseline.ReloadCheckMinutes",
-                                      5);
+                                      60);
+    if (auctionBaselineReloadCheckMinutes < 60)
+        auctionBaselineReloadCheckMinutes = 60;
     if (auctionBaselineReloadCheckMinutes > 1440)
         auctionBaselineReloadCheckMinutes = 1440;
 
