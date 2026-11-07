@@ -5,6 +5,7 @@
  */
 
 #include "NewRpgStrategy.h"
+#include "NewRpgMultipliers.h"
 
 NewRpgStrategy::NewRpgStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
@@ -105,6 +106,7 @@ triggers.push_back(
     }
 }
 
-void NewRpgStrategy::InitMultipliers(std::vector<Multiplier*>&)
+void NewRpgStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
 {
+    multipliers.push_back(new NewRpgQuestGiverMultiplier(botAI));
 }
